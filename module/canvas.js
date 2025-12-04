@@ -55,17 +55,3 @@ export const measurePath = function(points, options={}) {
 };
 
 /* -------------------------------------------- */
-
-/**
- * Hijack Token health bar rendering to include temporary and temp-max health in the bar display
- * TODO: This should probably be replaced with a formal Token class extension
- */
-const _TokenGetBarAttribute = Token.prototype.getBarAttribute;
-export const getBarAttribute = function(...args) {
-  const data = _TokenGetBarAttribute.bind(this)(...args);
-  if ( data && (data.attribute === "attributes.hp") ) {
-    data.value += parseInt(foundry.utils.getProperty(this.actor.system, "attributes.hp.temp") || 0);
-    data.max += parseInt(foundry.utils.getProperty(this.actor.system, "attributes.hp.tempmax") || 0);
-  }
-  return data;
-};

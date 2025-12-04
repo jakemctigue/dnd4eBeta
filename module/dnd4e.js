@@ -17,7 +17,8 @@ import ActorSheet4eNPC from "./actor/npc-sheet.js";
 import ActorSheet4eHazard from "./actor/hazard-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
-import { measurePath, getBarAttribute } from "./canvas.js";
+import { measurePath } from "./canvas.js";
+import { Token4e } from "./token.js";
 import { _getInitiativeFormula } from "./combat.js";
 
 // Import Documents
@@ -99,6 +100,9 @@ Hooks.once("init", async function() {
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "fa-regular fa-triangle";
 
 	CONFIG.Canvas.rulerClass = Ruler4e;
+	
+	// Register custom Token class for health bar display
+	CONFIG.Token.objectClass = Token4e;
 
 	registerSystemSettings();
 
@@ -281,9 +285,6 @@ Hooks.on("canvasInit", function() {
 	canvas.grid.diagonalRule = game.settings.get("dnd4e", "diagonalMovement");
 	// Override measurePath for custom diagonal movement rules (v13 compatible)
 	foundry.grid.SquareGrid.prototype.measurePath = measurePath;
-
-	// Extend Token Resource Bars
-	Token.prototype.getBarAttribute = getBarAttribute;
 });
 
 
